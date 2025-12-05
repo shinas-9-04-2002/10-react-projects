@@ -7,6 +7,7 @@ export const BASE_URL = "http://localhost:9000";
 const App = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [filteredData, setFilteredData] = useState(null);
 
     const fetchFoodData = async () => {
         setLoading(true);
@@ -14,7 +15,7 @@ const App = () => {
             const response = await fetch(BASE_URL);
             const res = await response.json();
             setData(res);
-
+            setFilteredData(res);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -25,12 +26,16 @@ const App = () => {
         fetchFoodData();
     }, []);
 
-    const temp = {
-        image: "/images/egg.png",
-        name: "Boilded Egg",
-        price: 10,
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-        type: "breakfast",
+    const searchFood = (e) => {
+        const searchValue = e.target.value;
+        if (searchValue === "") {
+            setFilteredData(null);
+        }
+
+        const filter = data?.filter((food) =>
+            food.name.toLowerCase().includes(searchValue.toLowerCase())
+        );
+        setFilteredData(filter)
     };
 
     if (loading) {
@@ -45,7 +50,11 @@ const App = () => {
                     </div>
 
                     <div className="search">
-                        <input type="text" placeholder="Search Food" />
+                        <input
+                            type="text"
+                            placeholder="Search Food"
+                            onChange={searchFood}
+                        />
                     </div>
                 </TopContainer>
 
@@ -56,7 +65,7 @@ const App = () => {
                     <Button>Dinner</Button>
                 </FilterContainer>
             </Container>
-            <SearchReasult data={data} />
+            <SearchReasult data={filteredData} />
         </>
     );
 };
