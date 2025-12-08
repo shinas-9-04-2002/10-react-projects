@@ -35,7 +35,7 @@ const App = () => {
     return (
         <>
             <div className="w-full max-w-md mx-auto shadow-md rounded-lg p-4 my-8 bg-gray-700">
-                <h1 className="text-white text-center mb-4 text-xl">
+                <h1 className="text-white text-center mb-4 text-xl ">
                     Password Generator
                 </h1>
 
